@@ -6,7 +6,7 @@ import Logo from '../assets/logo_primary.svg';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
-function Signin() {
+function SignIn() {
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -43,4 +43,4 @@ function Signin() {
   )
 }
 
-export default Signin
+export default SignIn

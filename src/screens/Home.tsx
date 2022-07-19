@@ -5,10 +5,12 @@ import Logo from '../assets/logo_secondary.svg';
 import Filter from '../components/Filter';
 import Order, { OrderProps } from '../components/Order';
 import Button from '../components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 function Home() {
 
   const [statusSelected, setStatusSelected] = useState<'open' | 'closed'>('open');
+  const navigation = useNavigation();
   const [orders, setOrders] = useState<OrderProps[]>([
     { 
       id: "123", 
@@ -43,6 +45,14 @@ function Home() {
   ])
   const { colors } = useTheme();
 
+  function handleNewOrder() {
+    navigation.navigate("new");
+  }
+
+  function handleOpenDetails(orderId: string) {
+    navigation.navigate('details', {orderId});
+  }
+
   return (
     <VStack flex={1} pb={6} bg="gray.700">
       <HStack
@@ -63,10 +73,10 @@ function Home() {
       <VStack flex={1} px={6}>
         <HStack w="full" mt={8} mb={4} justifyContent="space-between" alignItems="center">
           <Heading color="gray.100">
-            Meus chamados
+            Solicitações
           </Heading>
           <Text color="gray.200">
-            3
+            {orders.length}
           </Text>
         </HStack>
 
@@ -89,7 +99,7 @@ function Home() {
         <FlatList 
           data={orders.filter(item => item.status === statusSelected)}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <Order data={item} />}
+          renderItem={({ item }) => <Order data={item} onPress={() => handleOpenDetails(item.id)}/>}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 100 }}
           ListEmptyComponent={() => (
@@ -103,11 +113,11 @@ function Home() {
           )}
         />
 
-        <Button title='Nova solicitação' />
+        <Button title='Nova solicitação' onPress={handleNewOrder}/>
       </VStack>
 
     </VStack>
   )
 }
 
-export default Home
+export default Home;
